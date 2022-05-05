@@ -34,7 +34,7 @@ public class BatchConfig {
 
     @Bean
     public ItemReader<JsonNode> itemReader() {
-        return new JsonFileReader("/home/java/meta_Clothing_Shoes_and_Jewelry.json");
+        return new JsonFileReader("data/meta_Magazine_Subscriptions.json");
     }
 
     @Bean

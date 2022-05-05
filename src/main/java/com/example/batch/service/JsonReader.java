@@ -15,7 +15,7 @@ import org.springframework.batch.item.ItemReader;
 
 public class JsonReader implements StepExecutionListener, ItemReader<JsonNode> {
 
-    private final String FILE_NAME = "data/meta_Magazine_Subscriptions_100.json";
+    private final String FILE_NAME = "data/meta_Magazine_Subscriptions.json";
 
     private BufferedReader reader;
 

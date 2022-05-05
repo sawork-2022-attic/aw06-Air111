@@ -1,5 +1,6 @@
 package com.example.batch.service;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.batch.core.ExitStatus;
@@ -27,7 +28,8 @@ public class JsonFileReader implements StepExecutionListener, ItemReader<JsonNod
     }
 
     private void initReader() throws FileNotFoundException {
-        File file = new File(fileName);
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        File file = new File(classLoader.getResource(fileName).getFile());
         reader = new BufferedReader(new FileReader(file));
     }
 
@@ -42,8 +44,10 @@ public class JsonFileReader implements StepExecutionListener, ItemReader<JsonNod
 
     @Override
     public JsonNode read() throws Exception {
-        if (objectMapper == null)
+        if (objectMapper == null) {
             objectMapper = new ObjectMapper();
+            objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true) ;
+        }
 
         if (reader == null) {
             initReader();
@@ -52,7 +56,7 @@ public class JsonFileReader implements StepExecutionListener, ItemReader<JsonNod
         String line = reader.readLine();
 
         if (line != null)
-            return objectMapper.readTree(reader.readLine());
+            return objectMapper.readTree(line);
         else
             return null;
     }
